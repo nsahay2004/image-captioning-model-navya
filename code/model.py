@@ -39,9 +39,38 @@ class ImageCaptionModel(tf.keras.Model):
         ## NOTE: make sure you are calculating gradients and optimizing as appropriate
         ##       (similar to batch_step from HW2)
 
-        avg_loss = 0
-        avg_acc = 0
-        avg_prp = 0      
+        num_batches = int(len(train_captions) / batch_size)
+        indices = tf.range(start=0, limit=len(train_captions))
+        shuffled_indices = tf.random.shuffle(indices)
+        train_image_features = tf.gather(train_image_features, shuffled_indices)
+        train_captions = tf.gather(train_captions, shuffled_indices)
+
+        total_loss = total_seen = total_correct = 0
+        for index, end in enumerate(range(batch_size, len(train_captions)+1, batch_size)):
+            start = end - batch_size
+            batch_image_features = train_image_features[start:end, :]
+            decoder_input = train_captions[start:end, :-1]
+            decoder_labels = train_captions[start:end, 1:]
+
+
+            with tf.GradientTape() as tape:
+                probs = self(batch_image_features, decoder_input)
+                mask = decoder_labels != padding_index
+                num_predictions = tf.reduce_sum(tf.cast(mask, tf.float32))
+                loss = self.loss_function(probs, decoder_labels, mask)
+
+                grads = tape.gradient(loss, self.trainable_variables)
+                self.optimizer.apply_gradients(zip(grads,self.trainable_variables))
+                accuracy = self.accuracy_function(probs, decoder_labels, mask)
+
+
+                total_loss += loss
+                total_seen += num_predictions
+                total_correct += num_predictions * accuracy
+
+        avg_loss = float(total_loss / total_seen)
+        avg_acc = float(total_correct / total_seen)
+        avg_prp = np.exp(avg_loss)
         return avg_loss, avg_acc, avg_prp
 
     def test(self, test_captions, test_image_features, padding_index, batch_size=30):
