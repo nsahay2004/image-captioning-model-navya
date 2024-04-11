@@ -149,7 +149,7 @@ class TransformerBlock(tf.keras.layers.Layer):
         # 1) Define the Feed Forward, self-attention, encoder-decoder-attention, and layer normalization layers
         # 2) For 2470 students, use multiheaded attention
 
-        self.ff_layer = tf.keras.Sequential(tf.keras.layers.Dense(64,activation='relu'), tf.keras.layers.Dense(emb_sz))
+        self.ff_layer = tf.keras.Sequential([tf.keras.layers.Dense(64,activation='relu'), tf.keras.layers.Dense(emb_sz)])
         self.add = tf.keras.layers.Add()
 
 
@@ -187,7 +187,7 @@ class TransformerBlock(tf.keras.layers.Layer):
         ff_output = self.ff_layer(unmask_norm)
         ff_residual = self.add([unmask_norm, ff_output])
         ff_norm = self.layer_norm(ff_residual)
-        output = tf.keras.activations.relu(ff_norm)
+        output = tf.keras.activations.relu(ff_norm,alpha=0.3)
 
         return output
 
