@@ -181,7 +181,7 @@ class TransformerBlock(tf.keras.layers.Layer):
         masked_attention = self.self_atten(inputs,inputs,inputs)
         mask_res = self.add([masked_attention,inputs])
         mask_norm = self.layer_norm(mask_res)
-        unmasked_attention = self.self_context_atten(context_sequence,inputs,inputs)
+        unmasked_attention = self.self_context_atten(context_sequence,context_sequence,inputs)
         unmask_res = self.add([mask_norm, unmasked_attention])
         unmask_norm = self.layer_norm(unmask_res)
         ff_output = self.ff_layer(mask_norm + unmask_norm)
