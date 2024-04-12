@@ -73,7 +73,7 @@ class AttentionHead(tf.keras.layers.Layer):
 
 
         
-        self.attn_mtx = AttentionMatrix(trainable=True, use_mask=self.use_mask)
+        self.attn_mtx = AttentionMatrix(use_mask=self.use_mask)
 
 
     @tf.function
@@ -223,6 +223,6 @@ class PositionalEncoding(tf.keras.layers.Layer):
         length = tf.shape(x)[1]
         x = self.embedding(x)
         x *= tf.math.sqrt(tf.cast(self.embed_size, tf.float32))
-        x = x + self.pos_encoding
+        x = x + self.pos_encoding[:,:length,:]
         return x
     

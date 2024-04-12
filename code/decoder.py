@@ -76,6 +76,7 @@ class TransformerDecoder(tf.keras.Model):
 
         # Define positional encoding to embed and offset layer for language:
         self.encoding = PositionalEncoding(self.vocab_size,self.hidden_size,self.window_size)
+        print(self.encoding)
 
         # Define transformer decoder layer:
         self.decoder = TransformerBlock(self.hidden_size)
