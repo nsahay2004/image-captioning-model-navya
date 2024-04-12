@@ -47,10 +47,11 @@ class AttentionMatrix(tf.keras.layers.Layer):
         # Those queries will become the new embeddings. Return attention score as per lecture slides.
 
         weighted_sum = tf.matmul(Q,K,transpose_b=True)  
-        weighted_sum= weighted_sum/tf.sqrt(float(K.shape[2]))
+        d_k = K.shape[2]
+        weighted_sum= weighted_sum/tf.sqrt(float(d_k))
         
         if self.use_mask == True:
-            weighted_sum = weighted_sum + atten_mask
+            weighted_sum += atten_mask
         
         attention_matrix = tf.nn.softmax(weighted_sum)
       
@@ -100,9 +101,11 @@ class AttentionHead(tf.keras.layers.Layer):
         Q = tf.tensordot(inputs_for_queries, self.W_q, axes=1)
 
         print('check')
+
+        softmax = self.attn_mtx((K,Q))
         
 
-        output = tf.matmul(self.attn_mtx((K,Q)),V)
+        output = tf.matmul(softmax,V)
 
         return output
 
