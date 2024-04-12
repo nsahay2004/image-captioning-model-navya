@@ -223,6 +223,6 @@ class PositionalEncoding(tf.keras.layers.Layer):
         length = tf.shape(x)[1]
         x = self.embedding(x)
         x *= tf.math.sqrt(tf.cast(self.embed_size, tf.float32))
-        x = x + self.pos_encoding[:,:length,:]
+        x = x + self.pos_encoding[tf.newaxis, :length, :]
         return x
     
