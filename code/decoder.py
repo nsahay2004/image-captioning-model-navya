@@ -90,6 +90,7 @@ class TransformerDecoder(tf.keras.Model):
         # 2) Pass the captions through your positional encoding layer
         # 3) Pass the english embeddings and the image sequences to the decoder
         # 4) Apply dense layer(s) to the decoder out to generate **logits**
+        encoded_images = tf.expand_dims(encoded_images,axis=1)
         embedded_images = self.image_embedding(encoded_images)
         embedded_captions = self.encoding(captions)
         decoded_images = self.decoder(inputs=embedded_captions,context_sequence=embedded_images)
