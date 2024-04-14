@@ -68,9 +68,10 @@ class ImageCaptionModel(tf.keras.Model):
                 total_seen += num_predictions
                 total_correct += num_predictions * accuracy
 
-        avg_loss = float(total_loss / total_seen)
-        avg_acc = float(total_correct / total_seen)
-        avg_prp = np.exp(avg_loss)
+            avg_loss = float(total_loss / total_seen)
+            avg_acc = float(total_correct / total_seen)
+            avg_prp = np.exp(avg_loss)
+        
         return avg_loss, avg_acc, avg_prp
 
     def test(self, test_captions, test_image_features, padding_index, batch_size=30):

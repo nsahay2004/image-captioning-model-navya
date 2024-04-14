@@ -72,7 +72,7 @@ class TransformerDecoder(tf.keras.Model):
         # TODO: Define image and positional encoding, transformer decoder, and classification layers
 
         # Define feed forward layer(s) to embed image features into a vector 
-        self.image_embedding = tf.keras.Sequential([tf.keras.layers.Dense(64,activation='relu',kernel_initializer="glorot_uniform",bias_initializer="zeros" ), tf.keras.layers.Dense(self.hidden_size,activation=None,kernel_initializer="glorot_uniform",bias_initializer="zeros" )])
+        self.image_embedding = tf.keras.Sequential([tf.keras.layers.Dense(64,activation='relu',kernel_initializer="glorot_uniform",bias_initializer="zeros"), tf.keras.layers.Dense(self.hidden_size,activation=None,kernel_initializer="glorot_uniform",bias_initializer="zeros" )])
 
         # Define positional encoding to embed and offset layer for language:
         self.encoding = PositionalEncoding(self.vocab_size,self.hidden_size,self.window_size)

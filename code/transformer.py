@@ -100,7 +100,7 @@ class AttentionHead(tf.keras.layers.Layer):
         V = tf.tensordot(inputs_for_values, self.W_v, axes=1)
         Q = tf.tensordot(inputs_for_queries, self.W_q, axes=1)
 
-        print('check')
+
 
         softmax = self.attn_mtx((K,Q))
         
@@ -145,7 +145,7 @@ class TransformerBlock(tf.keras.layers.Layer):
         # 1) Define the Feed Forward, self-attention, encoder-decoder-attention, and layer normalization layers
         # 2) For 2470 students, use multiheaded attention
 
-        self.ff_layer = tf.keras.Sequential([tf.keras.layers.Dense(64,activation='relu'), tf.keras.layers.Dense(emb_sz, activation='relu')])
+        self.ff_layer = tf.keras.Sequential([tf.keras.layers.Dense(64, activation='relu'),tf.keras.layers.Dense(emb_sz,activation='relu')])
         self.add = tf.keras.layers.Add()
 
 
@@ -222,7 +222,6 @@ class PositionalEncoding(tf.keras.layers.Layer):
         length = tf.shape(x)[1]
         x = self.embedding(x)
         x *= tf.math.sqrt(tf.cast(self.embed_size, tf.float32))
-        print('hello')
         x = x + self.pos_encoding[tf.newaxis, :length, :]
         return x
     
